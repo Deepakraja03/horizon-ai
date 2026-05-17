@@ -27,7 +27,14 @@ Move candidates across hiring stages. All changes sync with the database in real
 Select up to 4 candidates to benchmark side-by-side. You can trigger an automated AI hiring committee evaluation and download a clean PDF report:
 ![Candidate Comparison](screenshots/candidate_compare.png)
 
-### 4. Careers Portal (Candidate View)
+### 4. Overlaid Dimensions Radar & Interactive Credentials Matrix
+An advanced, responsive dual-pane panel displaying candidate scores side-by-side:
+*   **Overlaid Radar Chart**: Renders dynamic candidate scores across 4 key dimensions: *Technical Skills*, *Experience & Seniority*, *Education Alignment*, and *Role Fit*.
+*   **Factual Match Evidence Summary Table**: Highlights the actual matching skills, experience logs, and educational background parameters of each candidate compared side-by-side with strict factual accuracy.
+*   **Tick-Click Synapse**: Click any axis label on the radar chart to instantly focus and apply a glowing focus highlight to the corresponding credentials matrix row without manual scrolling!
+![Dimensions Radar](screenshots/dimensions_radar.png)
+
+### 5. Careers Portal (Candidate View)
 A clean public page where job seekers can view active listings and upload their resumes:
 ![Candidate Jobs View](screenshots/candidate_jobs_view.png)
 
