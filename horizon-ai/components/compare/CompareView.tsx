@@ -116,7 +116,7 @@ export default function CompareView({ candidates, lastParsedJd, provider, modelN
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-140px)] min-h-[500px] print:h-auto print:bg-white print:text-black">
+    <div className="flex flex-col h-auto print:h-auto print:bg-white print:text-black">
       {/* Hide header and ALL other site layout elements in print mode */}
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
@@ -365,7 +365,7 @@ export default function CompareView({ candidates, lastParsedJd, provider, modelN
 
       {/* Mode 2: Comparison Layout (Task 6.2 & 6.3) */}
       {mode === "comparison" && (
-        <div ref={printRef} id="compare-print-report" className="flex-1 flex flex-col min-h-0 bg-white/40 dark:bg-graphite-900/30 border border-graphite-200/60 dark:border-graphite-850 p-6 rounded-2xl backdrop-blur-md shadow-sm overflow-y-auto print:p-0 print:border-none print:shadow-none print:bg-white">
+        <div ref={printRef} id="compare-print-report" className="flex flex-col bg-white/40 dark:bg-graphite-900/30 border border-graphite-200/60 dark:border-graphite-850 p-6 rounded-2xl backdrop-blur-md shadow-sm print:p-0 print:border-none print:shadow-none print:bg-white">
           
           {/* Header & Export Actions */}
           <div className="flex justify-between items-center mb-6 print-hidden">

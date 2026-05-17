@@ -461,6 +461,7 @@ def match_jd_candidates(jd: MatchJDRequest):
                     "status": status
                 })
                 
+            # 1. Skills Overlap calculation
             if required_lower:
                 skills_score = (skills_matched_count / len(required_lower)) * 100
             else:
@@ -473,9 +474,55 @@ def match_jd_candidates(jd: MatchJDRequest):
             else:
                 # Deduct 15% per missing year
                 seniority_score = max(0, 100 - (abs(exp_diff) * 15))
-                
-            # 3. Overall Weighted Score: 60% skills, 40% experience
-            overall_score = round((skills_score * 0.6) + (seniority_score * 0.4))
+
+            # 3. Education Alignment Calculation
+            cand_edu = candidate.get("education", "Any").lower()
+            jd_edu = jd.education.lower() if jd.education else "any"
+            if jd_edu == "any" or not jd_edu.strip() or jd_edu in cand_edu:
+                education_score = 100
+            elif "master" in jd_edu:
+                if "phd" in cand_edu or "doctor" in cand_edu:
+                    education_score = 100
+                elif "bachelor" in cand_edu:
+                    education_score = 70
+                else:
+                    education_score = 50
+            elif "phd" in jd_edu or "doctor" in jd_edu:
+                if "master" in cand_edu:
+                    education_score = 65
+                elif "bachelor" in cand_edu:
+                    education_score = 40
+                else:
+                    education_score = 30
+            else:
+                education_score = 80
+
+            # 4. Role Fit Calculation based on job title and category overlap
+            role_fit_score = 75
+            jd_title_lower = jd.title.lower() if jd.title else ""
+            cand_title_lower = candidate.get("title", "").lower()
+            cand_category_lower = candidate.get("category", "").lower()
+            
+            if cand_title_lower and (cand_title_lower in jd_title_lower or jd_title_lower in cand_title_lower):
+                role_fit_score += 15
+            if cand_category_lower and (cand_category_lower in jd_title_lower or jd_title_lower in cand_category_lower):
+                role_fit_score += 10
+            role_fit_score = min(100, role_fit_score)
+
+            dimension_scores = {
+                "technical_skills": round(skills_score),
+                "experience_seniority": round(seniority_score),
+                "education_alignment": round(education_score),
+                "role_fit": round(role_fit_score)
+            }
+
+            # 5. Overall Weighted Score: 40% skills, 30% experience, 15% education, 15% role fit
+            overall_score = round(
+                (skills_score * 0.40) + 
+                (seniority_score * 0.30) + 
+                (education_score * 0.15) + 
+                (role_fit_score * 0.15)
+            )
             
             # Synthesize custom AI text explanation
             if overall_score >= 85:
@@ -490,6 +537,7 @@ def match_jd_candidates(jd: MatchJDRequest):
                 "matchScore": overall_score,
                 "skillsScore": round(skills_score),
                 "seniorityScore": round(seniority_score),
+                "dimensionScores": dimension_scores,
                 "skillsMatrix": overlap_matrix,
                 "summary": summary
             })
