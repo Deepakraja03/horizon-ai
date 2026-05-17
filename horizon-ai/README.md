@@ -13,6 +13,36 @@ This is the high-fidelity, premium client application for **Horizon AI** built u
 
 ---
 
+## 📸 Product Tour & Telemetry Showcase
+
+Here is a visual walk-through of the premium, high-fidelity interfaces running live on **Horizon AI**:
+
+### 1. Executive Telemetry Dashboard (Applicants Overview)
+The primary analytical interface presenting system stats, database connectivity telemetry, candidate applications, and active talent profiles:
+![Executive Telemetry Dashboard](../screenshots/pipeline_applicant.png)
+
+### 2. Interactive Kanban Telemetry Pipeline
+Manage and transition candidates dynamically across hiring stages with real-time state synchronization:
+![Kanban Talent Pipeline](../screenshots/kaban_pipeline.png)
+
+### 3. Hiring Committee Candidate Compare Matrix
+Compare multiple candidates side-by-side against custom role requirements. Trigger an automated Hiring Committee evaluation and generate monochrome print-bleed executive reports:
+![Candidate Compare Matrix](../screenshots/candidate_compare.png)
+
+### 4. Careers & Job Listings View (Candidate Portal)
+The career board where job seekers can view active opportunities and upload resumes:
+![Candidate Jobs View](../screenshots/candidate_jobs_view.png)
+
+### 5. Live Candidate Application Tracking
+The telemetry board allowing applicants to monitor their application review status and stage logs in real-time:
+![Candidate Application Status](../screenshots/candidate_application_status.png)
+
+### 🎬 Workflow Demonstration Video
+Watch our high-fidelity workspace demonstration video to see the full resume-parsing, matching, and committee evaluation flow in action:
+*   🎥 **[Watch the Workspace Video Demo (MOV)](../screenshots/system_demo.mov)**
+
+---
+
 ## 🔐 Authentication Modes
 
 The frontend client operates on a smart segmented authentication architecture:

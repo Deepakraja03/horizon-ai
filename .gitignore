@@ -106,3 +106,10 @@ build/
 horizon-ai/.env
 backend/.env
 !.env.example
+
+# ==========================================
+# 5. Large Media & Screen Recordings
+# ==========================================
+screenshots/*.mov
+screenshots/*.mp4
+
