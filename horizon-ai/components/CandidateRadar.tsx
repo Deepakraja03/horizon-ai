@@ -36,14 +36,56 @@ const COLORS = [
 export default function CandidateRadar({ candidates, lastParsedJd, targetRole }: CandidateRadarProps) {
   const [highlightedRowId, setHighlightedRowId] = useState<string | null>(null);
 
-  // Fallback criteria if no JD was parsed to ensure high-fidelity radar displays
-  const activeJd = lastParsedJd || {
-    title: targetRole,
-    min_experience: 5,
-    education: "Bachelor",
-    required_skills: ["React", "TypeScript", "Node.js", "SQL"],
-    preferred_skills: ["CSS", "DevOps"],
+  // Dynamic role fallback generator to make sure matches align with the candidate's actual credentials
+  const getFallbackJd = (roleName: string) => {
+    const roleLower = roleName.toLowerCase();
+    if (roleLower.includes("design") || roleLower.includes("creative") || roleLower.includes("ui") || roleLower.includes("ux")) {
+      return {
+        title: roleName,
+        min_experience: 4,
+        education: "Bachelor",
+        required_skills: ["Figma", "Design", "UI", "UX", "dashboard"],
+        preferred_skills: ["HTML", "CSS"],
+      };
+    }
+    if (roleLower.includes("devops") || roleLower.includes("sre") || roleLower.includes("platform") || roleLower.includes("cloud")) {
+      return {
+        title: roleName,
+        min_experience: 6,
+        education: "Bachelor",
+        required_skills: ["AWS", "Kubernetes", "Terraform", "CI/CD", "Docker"],
+        preferred_skills: ["Python", "Prometheus"],
+      };
+    }
+    if (roleLower.includes("product") || roleLower.includes("manager") || roleLower.includes("owner") || roleLower.includes("pm")) {
+      return {
+        title: roleName,
+        min_experience: 5,
+        education: "Bachelor",
+        required_skills: ["Product Strategy", "A/B Testing", "Agile", "Jira", "Roadmaps"],
+        preferred_skills: ["SQL", "Analytics"],
+      };
+    }
+    if (roleLower.includes("qa") || roleLower.includes("test") || roleLower.includes("automation")) {
+      return {
+        title: roleName,
+        min_experience: 3,
+        education: "Bachelor",
+        required_skills: ["Selenium", "Playwright", "Automation", "QA", "Python"],
+        preferred_skills: ["CI/CD", "SQL"],
+      };
+    }
+    // General software engineer fallback
+    return {
+      title: roleName,
+      min_experience: 5,
+      education: "Bachelor",
+      required_skills: ["React", "TypeScript", "Node.js", "SQL", "Javascript"],
+      preferred_skills: ["CSS", "DevOps"],
+    };
   };
+
+  const activeJd = lastParsedJd || getFallbackJd(targetRole);
 
   // Helper logic to calculate dimension scores on-the-fly (to keep frontend consistent with backend metrics)
   const calculateDimensionScores = (cand: Candidate) => {
@@ -74,9 +116,9 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
     let eduScore = 80;
     if (reqEdu === "any" || !reqEdu.trim() || candEdu.includes(reqEdu)) {
       eduScore = 100;
-    } else if (reqEdu.includes("master")) {
-      if (candEdu.includes("phd") || candEdu.includes("doctor")) eduScore = 100;
-      else if (candEdu.includes("bachelor")) eduScore = 70;
+    } else if (reqEdu.includes("master") || reqEdu.includes("mba")) {
+      if (candEdu.includes("phd") || candEdu.includes("doctor") || candEdu.includes("mba") || candEdu.includes("master")) eduScore = 100;
+      else if (candEdu.includes("bachelor")) eduScore = 80;
       else eduScore = 50;
     } else if (reqEdu.includes("phd") || reqEdu.includes("doctor")) {
       if (candEdu.includes("master")) eduScore = 65;
@@ -105,14 +147,42 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
     };
   };
 
+  // Factual matching skills list for evidence
+  const getMatchedSkills = (cand: Candidate) => {
+    const candSkills = (cand.skills || []).map((s) => s.toLowerCase());
+    const reqSkills = (activeJd.required_skills || []).map((s) => s.toLowerCase());
+    const matched: string[] = [];
+    
+    reqSkills.forEach((reqSkill) => {
+      const match = cand.skills?.find(
+        (s) => s.toLowerCase() === reqSkill || s.toLowerCase().includes(reqSkill) || reqSkill.includes(s.toLowerCase())
+      );
+      if (match && !matched.includes(match)) {
+        matched.push(match);
+      }
+    });
+    return matched;
+  };
+
   // Build high-fidelity evidence texts
   const generateEvidence = (cand: Candidate, dimKey: string, score: number) => {
-    const skills = cand.skills || [];
     switch (dimKey) {
-      case "technical_skills":
-        return `Possesses ${skills.slice(0, 3).join(", ")} out of ${activeJd.required_skills?.length || 0} core requested capabilities.`;
-      case "experience_seniority":
-        return `Offers ${cand.experience} years of hands-on industry experience vs target role benchmark of ${activeJd.min_experience || 0} years.`;
+      case "technical_skills": {
+        const matchedSkills = getMatchedSkills(cand);
+        if (matchedSkills.length > 0) {
+          return `Possesses ${matchedSkills.join(", ")} matching ${matchedSkills.length} out of ${activeJd.required_skills?.length || 0} core capabilities.`;
+        } else {
+          return `No overlapping skills found out of ${activeJd.required_skills?.length || 0} required capabilities (${activeJd.required_skills?.slice(0, 3).join(", ")}).`;
+        }
+      }
+      case "experience_seniority": {
+        const expDiff = cand.experience - (activeJd.min_experience || 0);
+        if (expDiff >= 0) {
+          return `Offers ${cand.experience} years of hands-on experience, exceeding the role requirement of ${activeJd.min_experience || 0} years.`;
+        } else {
+          return `Offers ${cand.experience} years of experience, falling below the role requirement of ${activeJd.min_experience || 0} years.`;
+        }
+      }
       case "education_alignment":
         return `Academic profile features a credential of "${cand.education}", satisfying job spec requirements.`;
       case "role_fit":
@@ -159,28 +229,29 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
   };
 
   return (
-    <div className="w-full space-y-6 print:space-y-4">
-      {/* Visual Radar Section */}
-      <div className="p-6 rounded-2xl border border-graphite-250 dark:border-graphite-850 bg-white/40 dark:bg-graphite-900/10 backdrop-blur-md shadow-sm relative overflow-hidden flex flex-col items-center">
-        <div className="w-full text-center mb-4">
+    <div className="w-full flex flex-col xl:flex-row gap-6 items-stretch print:flex-col print:space-y-4">
+      
+      {/* Left Column: Visual Radar Section (takes constrained space on large, full on mobile) */}
+      <div className="flex-1 xl:max-w-md p-6 rounded-2xl border border-graphite-250 dark:border-graphite-850 bg-white/40 dark:bg-graphite-900/10 backdrop-blur-md shadow-sm flex flex-col items-center justify-between">
+        <div className="w-full text-center mb-3">
           <h4 className="text-xs font-bold uppercase tracking-widest text-indigo-500 dark:text-indigo-400 font-mono">
             Candidate Dimensions Radar
           </h4>
           <p className="text-[10px] text-graphite-500 mt-1">
-            Visualizes multi-candidate strengths side-by-side. Click any axis label to review underlying evidence.
+            Click any label to review empirical details.
           </p>
         </div>
 
         {/* Dynamic Interactive Radar Chart */}
-        <div className="w-full h-[320px] max-w-lg">
+        <div className="w-full h-[280px] max-w-sm flex items-center justify-center">
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="75%" data={chartData}>
+            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
               <PolarGrid stroke="#9ca3af" strokeDasharray="3 3" opacity={0.3} />
               
               <PolarAngleAxis
                 dataKey="name"
                 stroke="#6b7280"
-                tick={{ fill: "#6b7280", fontSize: 10, fontWeight: 700, cursor: "pointer" }}
+                tick={{ fill: "#6b7280", fontSize: 9, fontWeight: 700, cursor: "pointer" }}
                 onClick={(data) => {
                   if (data && data.value) {
                     handleDimensionClick(data.value);
@@ -224,12 +295,12 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
               />
               <Legend
                 verticalAlign="bottom"
-                height={36}
+                height={28}
                 wrapperStyle={{
-                  fontSize: "10.5px",
+                  fontSize: "10px",
                   fontWeight: 700,
                   color: "#4b5563",
-                  paddingTop: "10px",
+                  paddingTop: "5px",
                 }}
               />
             </RadarChart>
@@ -237,9 +308,9 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
         </div>
       </div>
 
-      {/* Evidence Panel below the Radar Chart */}
-      <div className="rounded-2xl border border-graphite-250 dark:border-graphite-850 bg-white/40 dark:bg-graphite-900/10 backdrop-blur-md shadow-sm overflow-hidden">
-        <div className="px-5 py-4 border-b border-graphite-250 dark:border-graphite-850 bg-white/50 dark:bg-graphite-950/20 shrink-0">
+      {/* Right Column: Evidence Panel Table */}
+      <div className="flex-1 rounded-2xl border border-graphite-250 dark:border-graphite-850 bg-white/40 dark:bg-graphite-900/10 backdrop-blur-md shadow-sm overflow-hidden flex flex-col justify-between">
+        <div className="px-5 py-3 border-b border-graphite-250 dark:border-graphite-850 bg-white/50 dark:bg-graphite-950/20 shrink-0">
           <h4 className="text-xs font-bold uppercase tracking-widest text-graphite-450 dark:text-graphite-400 font-mono">
             Dimension Match Evidence Summary
           </h4>
@@ -248,17 +319,17 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
           </p>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto flex-grow flex flex-col justify-center">
           <table className="w-full border-collapse text-left text-xs">
             <thead>
               <tr className="border-b border-graphite-200 dark:border-graphite-850 bg-white/30 dark:bg-graphite-900/20">
-                <th className="p-4 font-bold text-graphite-450 dark:text-graphite-400 uppercase tracking-wider font-mono text-[9px] w-[180px]">
+                <th className="p-3 font-bold text-graphite-450 dark:text-graphite-400 uppercase tracking-wider font-mono text-[9px] w-[140px]">
                   Evaluated Dimension
                 </th>
                 {candidates.map((cand, idx) => {
                   const color = COLORS[idx % COLORS.length];
                   return (
-                    <th key={cand.id} className="p-4 font-bold uppercase tracking-wider font-mono text-[9px]">
+                    <th key={cand.id} className="p-3 font-bold uppercase tracking-wider font-mono text-[9px]">
                       <span className="flex items-center gap-1.5" style={{ color: color.stroke }}>
                         <span className="w-2 h-2 rounded-full" style={{ backgroundColor: color.stroke }} />
                         {cand.name}
@@ -283,7 +354,7 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
                         : "hover:bg-graphite-50/50 dark:hover:bg-graphite-950/10"
                     }`}
                   >
-                    <td className="p-4 font-bold text-graphite-800 dark:text-white align-top border-r border-graphite-200/50 dark:border-graphite-850/50">
+                    <td className="p-3 font-bold text-graphite-800 dark:text-white align-top border-r border-graphite-200/50 dark:border-graphite-850/50">
                       {dim.name}
                     </td>
                     {candidates.map((cand, idx) => {
@@ -293,11 +364,11 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
                       const evidenceText = generateEvidence(cand, dim.key, score);
 
                       return (
-                        <td key={cand.id} className="p-4 align-top space-y-1.5">
+                        <td key={cand.id} className="p-3 align-top space-y-1">
                           {/* Score Badge */}
                           <div className="flex items-center gap-2">
                             <span
-                              className="px-2 py-0.5 rounded text-[10px] font-bold font-mono"
+                              className="px-1.5 py-0.5 rounded text-[9.5px] font-bold font-mono"
                               style={{
                                 backgroundColor: score >= 85 ? "rgba(16, 185, 129, 0.15)" : score >= 70 ? "rgba(99, 102, 241, 0.15)" : "rgba(245, 158, 11, 0.15)",
                                 color: score >= 85 ? "#10b981" : score >= 70 ? "#6366f1" : "#f59e0b",
@@ -308,7 +379,7 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
                             </span>
                           </div>
                           {/* Evidence Sentence */}
-                          <p className="text-[10.5px] text-graphite-600 dark:text-graphite-300 leading-relaxed font-sans font-medium">
+                          <p className="text-[10px] text-graphite-600 dark:text-graphite-300 leading-relaxed font-sans font-medium">
                             {evidenceText}
                           </p>
                         </td>
@@ -321,6 +392,7 @@ export default function CandidateRadar({ candidates, lastParsedJd, targetRole }:
           </table>
         </div>
       </div>
+
     </div>
   );
 }
