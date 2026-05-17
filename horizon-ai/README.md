@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Horizon AI — Next.js React 19 Frontend Client
 
-## Getting Started
+This is the high-fidelity, premium client application for **Horizon AI** built using **Next.js** (App Router) and **React 19**. The interface features curated CSS design tokens, smooth micro-interactions, responsive Kanban pipelines, and side-by-side executive candidate comparison systems with pristine print-bleed layouts.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🎨 Premium UX & Design Elements
+
+*   **Elite Graphite Dark Theme**: Built around deep graphite hues, soft glowing border grids, and luxurious glassmorphism blurs for an executive dashboard feel.
+*   **Kanban Telemetry Pipeline**: Interactive state tracking that allows drag-and-drop-style status transitions with on-the-fly REST integrations.
+*   **Pristine Print-Bleed layouts**: Custom CSS media queries configured to strip sidebar telemetry, margins, and dashboard headers instantly when executing browser prints, rendering pixel-perfect, monochrome evaluation reports.
+*   **Responsive Telemetry**: Completely adaptive layout blocks optimized for widescreen executive screens down to career portal interfaces on mobile devices.
+
+---
+
+## 🔐 Authentication Modes
+
+The frontend client operates on a smart segmented authentication architecture:
+1.  **Cloud Supabase Auth (Production)**: Handles secure JWT logins, passwordless Google OAuth handshakes, and persistent session recovery directly on our live domain.
+2.  **Sandbox Local Simulation**: Automatically initializes a Mock Recruiter workspace (`lead.recruiter@horizon.ai`) if Supabase environment keys are missing, allowing developers to test the full matching pipeline without registering accounts!
+
+---
+
+## 📋 Environment Configuration
+
+Create a `.env` file in this directory with the following variables:
+```env
+# URL base pointing to your live FastAPI backend server
+NEXT_PUBLIC_API_URL=https://horizon-ai-backend.vercel.app
+
+# Supabase Auth configuration (Optional: Sandbox mock active if left empty)
+NEXT_PUBLIC_SUPABASE_URL=https://clwtylsgsktgzxfzozez.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Local Installation & Launch
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Ensure you have Node.js (v18+) and your preferred package manager (`bun`, `npm`, or `yarn`) installed.
 
-## Learn More
+```bash
+# 1. Install required dependencies
+bun install   # or npm install
 
-To learn more about Next.js, take a look at the following resources:
+# 2. Spin up the hot-reloading Next.js development server
+bun run dev   # or npm run dev
+```
+*Browse to `http://localhost:3000` to interact with the recruitment telemetry dashboard!*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛡️ Production Security Header Maps (`vercel.json`)
+The frontend contains an optimized `vercel.json` config mapping custom headers to enforce the following security frameworks:
+*   `X-Frame-Options: DENY` (Anti-Clickjacking protection)
+*   `X-Content-Type-Options: nosniff` (Forced browser MIME-type validation)
+*   `X-XSS-Protection: 1; mode=block` (Browser-level script blocking)
+*   `Referrer-Policy: strict-origin-when-cross-origin` (Strict outbound referrers)
