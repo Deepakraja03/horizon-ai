@@ -1,58 +1,52 @@
-# Horizon AI — Unified Recruitment Telemetry & System Blueprint
+# Horizon AI — AI Recruitment Dashboard
 
-Welcome to **Horizon AI** — an elite, premium talent acquisition and recruitment dashboard telemetry suite. The system is engineered to automate Job Description parsing, orchestrate multi-provider LLM evaluations (Google Gemini & Groq), manage candidates in a dynamic Kanban telemetry pipeline, and output side-by-side executive print-bleed comparison matrices with single-click PDF compilers.
-
----
-
-## 🌐 Live Production Environments
-
-Both modules of **Horizon AI** are fully hosted, serverless, and operational:
-
-| Module | Deployment URL | Hosting Provider | Features |
-| :--- | :--- | :--- | :--- |
-| **Frontend UI** | [https://horizon-ai-app.vercel.app](https://horizon-ai-app.vercel.app) | **Vercel** | Next.js, Google/Supabase Auth, Premium Glassmorphic UI, Print-Bleed CSS |
-| **Backend API** | [https://horizon-ai-backend.vercel.app](https://horizon-ai-backend.vercel.app) | **Vercel Serverless** | FastAPI, Dual Supabase/SQLite ORM, Gemini & Groq LLMs |
+Welcome to **Horizon AI** — an AI recruitment dashboard with JD-aware resume scoring, Kanban pipeline, and candidate comparison. The system parses raw job descriptions, benchmarks candidates dynamically, lets you compare applicants side-by-side using an AI Hiring Committee synthesis, and generates clean PDF evaluation reports.
 
 ---
 
-## 📸 Product Tour & Telemetry Showcase
+## 🌐 Live Production URLs
 
-Here is a visual walk-through of the premium, high-fidelity interfaces running live on **Horizon AI**:
+*   **Frontend Client**: [https://horizon-ai-app.vercel.app](https://horizon-ai-app.vercel.app)
+*   **Backend API Server**: [https://horizon-ai-backend.vercel.app](https://horizon-ai-backend.vercel.app)
 
-### 1. Executive Telemetry Dashboard (Applicants Overview)
-The primary analytical interface presenting system stats, database connectivity telemetry, candidate applications, and active talent profiles:
-![Executive Telemetry Dashboard](screenshots/pipeline_applicant.png)
+---
 
-### 2. Interactive Kanban Telemetry Pipeline
-Manage and transition candidates dynamically across hiring phases with real-time state synchronization:
-![Kanban Talent Pipeline](screenshots/kaban_pipeline.png)
+## 📸 Product Tour & Video Demo
 
-### 3. Hiring Committee Candidate Compare Matrix
-Compare multiple candidates side-by-side against custom role requirements. Trigger an automated Hiring Committee evaluation and generate monochrome print-bleed executive reports:
-![Candidate Compare Matrix](screenshots/candidate_compare.png)
+Here is a quick tour of the dashboard interfaces:
 
-### 4. Careers & Job Listings View (Candidate Portal)
-The career board where job seekers can view active opportunities and upload resumes:
+### 1. Recruiter Dashboard
+Displays candidate applicant statistics, database connection health, and current active roles:
+![Recruiter Dashboard](screenshots/pipeline_applicant.png)
+
+### 2. Candidate Kanban Pipeline
+Move candidates across hiring stages. All changes sync with the database in real-time:
+![Kanban Pipeline](screenshots/kaban_pipeline.png)
+
+### 3. Candidate Comparison Matrix
+Select up to 4 candidates to benchmark side-by-side. You can trigger an automated AI hiring committee evaluation and download a clean PDF report:
+![Candidate Comparison](screenshots/candidate_compare.png)
+
+### 4. Careers Portal (Candidate View)
+A clean public page where job seekers can view active listings and upload their resumes:
 ![Candidate Jobs View](screenshots/candidate_jobs_view.png)
 
-### 5. Live Candidate Application Tracking
-The telemetry board allowing applicants to monitor their application review status and stage logs in real-time:
-![Candidate Application Status](screenshots/candidate_application_status.png)
+### 5. Application Tracking Board
+Allows applicants to view their real-time application review stages and progress logs:
+![Application Status](screenshots/candidate_application_status.png)
 
-### 🎬 Workspace Telemetry Loop & Video Demonstration
-Here is an instant, looping walkthrough showing the landing page and candidate Kanban tracking pipeline in action:
+### 🎬 Workflow Highlight Loop & Full Video
+Here is a 15-second looping preview of the candidate tracking pipeline:
 
-![Horizon AI Telemetry Loop](screenshots/system_demo_highlight.gif)
+![Horizon AI Workflow Loop](screenshots/system_demo_highlight.gif)
 
-*   🎥 **[Watch the Full 6-Minute System Walkthrough (Google Drive)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)**
-
-
+*   🎥 **[Watch the Full 6-Minute Demo Video (Google Drive)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)**
 
 ---
 
-## 🏗️ Decoupled Workspace Architecture
+## 🏗️ Project Architecture
 
-The workspace is organized as a single, unified Git repository with two distinct top-level modules. This makes tracking code, managing dependencies, and pushing to cloud hosting providers extremely simple and secure.
+The workspace is structured as a unified Git repository with two decoupled subprojects:
 
 ```mermaid
 graph TD
@@ -61,54 +55,50 @@ graph TD
         ROOT_README[README.md]
         
         subgraph Frontend [horizon-ai]
-            FE_CODE[Next.js App / React 19]
+            FE_CODE[Next.js Client / React 19]
             FE_CONFIG[vercel.json]
-            FE_ENV[.env.example]
         end
 
         subgraph Backend [backend]
             BE_CODE[FastAPI Python API]
             BE_CONFIG[vercel.json]
             BE_DEPS[requirements.txt]
-            BE_ENV[.env.example]
         end
     end
 
     FE_CODE <-->|JSON REST APIs| BE_CODE
-    BE_CODE <-->|Supabase Pooler / SQLite| DB[(Supabase Postgres / SQLite)]
-    BE_CODE <-->|Google / Groq SDKs| LLM[Gemini 2.5 Flash / Llama 3.3]
+    BE_CODE <-->|Postgres Pooler / SQLite| DB[(Supabase Postgres / SQLite)]
+    BE_CODE <-->|Gemini & Groq SDKs| LLM[Google Gemini / Groq Llama]
 ```
 
 ---
 
 ## 🔌 Environment & Credentials Setup
 
-Each module contains its own configuration file. For local development, copy the templates below:
+Each subproject manages its own local configuration file:
 
-### 1. Backend Settings (`/backend/.env`)
-Create a `.env` file in the `backend/` directory:
+### 1. Backend Configuration (`/backend/.env`)
+Create a `.env` file inside the `backend/` directory:
 ```env
 HOST=0.0.0.0
 PORT=8000
 
-# Google Gemini API Key (Obtain from Google AI Studio)
+# AI Provider API Keys
 GEMINI_API_KEY=your_gemini_api_key
-
-# Groq API Key (Obtain from Groq Console)
 GROQ_API_KEY=your_groq_api_key
 
-# Supabase PostgreSQL Connection Pooler String (Transaction mode on Port 6543)
-# If left empty, the server automatically boots with a local SQLite fallback!
+# Supabase Postgres Connection Pooler String (IPv4 Transaction Pooler on Port 6543)
+# If left empty, the server automatically defaults to a local SQLite backup database!
 SUPABASE_DATABASE_URL=postgresql://postgres.your-ref-id:your-password@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 ```
 
-### 2. Frontend Settings (`/horizon-ai/.env`)
-Create a `.env` file in the `horizon-ai/` directory:
+### 2. Frontend Configuration (`/horizon-ai/.env`)
+Create a `.env` file inside the `horizon-ai/` directory:
 ```env
-# Backend API Base Endpoint URL
+# Backend API Base Endpoint
 NEXT_PUBLIC_API_URL=https://horizon-ai-backend.vercel.app
 
-# Supabase Auth Credentials
+# Supabase Auth Settings
 NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
@@ -117,62 +107,57 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
 ## 🚀 Unified Local Startup Guide
 
-You can launch the entire ecosystem (both frontend and backend) simultaneously with a single terminal command using our root-level launcher:
+Launch both frontend and backend concurrently with a single command:
 
 ### 1-Click Dev Server (Recommended)
-From the root of the project directory, simply run:
+From the root of the project directory, run:
 ```bash
 make dev
 ```
-This will instantly activate the backend virtual environment (`.venv`), spin up your FastAPI serverless backend (`uvicorn`) on port `8000`, boot up your Next.js frontend client (`bun dev`) on port `3000`, and cleanly terminate both servers when you press `Ctrl+C` (preventing orphaned port conflicts).
+This automatically activates the backend virtual environment (`.venv`), starts your FastAPI serverless backend (`uvicorn`) on port `8000`, launches your Next.js client (`bun dev`) on port `3000`, and cleanly shuts down both servers when you press `Ctrl+C` to avoid orphaned port locks.
 
 ---
 
 ### Manual Multi-Terminal Startup (Optional)
 
-If you prefer to run the workspaces in separate terminals for independent debugging:
+If you prefer to run the services in separate terminals:
 
-#### Step 1: Start the Backend Server (Python / FastAPI)
-Make sure you have Python 3.11+ and `uv` installed:
+#### Step 1: Start the Backend Server
 ```bash
 # Navigate to the backend directory
 cd backend
 
-# Create and activate a clean virtual environment
+# Create and activate a virtual environment
 uv venv
 source .venv/bin/activate
 
-# Install compiled dependencies
+# Install dependencies and start the dev server
 uv pip install -r requirements.txt
-
-# Start the local development server
 uv run uvicorn main:app --reload
 ```
-*Your FastAPI documentation and interactive Swagger playground will launch at `http://localhost:8000/docs`.*
+*Your FastAPI documentation and interactive Swagger playground will be available at `http://localhost:8000/docs`.*
 
-#### Step 2: Start the Frontend UI Client (Next.js)
+#### Step 2: Start the Frontend UI Client
 ```bash
 # Navigate to the frontend directory
 cd horizon-ai
 
-# Install node dependencies using Bun
+# Install node dependencies and start the dev server
 bun install
-
-# Start the hot-reloading Next.js dev server
 bun run dev
 ```
-*Your interactive dashboard will boot instantly at `http://localhost:3000`.*
-
-
----
-
-## 🛡️ Telemetry & System Resilience Features
-*   **Dual-Database Fallback**: In serverless production environments (or when local database connections fail), the backend engine dynamically downgrades to a highly performant SQLite sandboxed database (`/tmp/pipeline.db`). This guarantees **100% server uptime and zero-crash booting**.
-*   **Production Vercel Routing**: The frontend includes a dedicated `vercel.json` enforcing Clickjacking prevention, XSS-protection, MIME-sniffing blocks, and clean URL routing out-of-the-box.
-*   **Supabase Transaction Pooler Integration**: Designed for Serverless architectures, connecting seamlessly over outbound IPv4 ports to prevent serverless execution connection limits.
+*Your interactive dashboard will launch immediately at `http://localhost:3000`.*
 
 ---
 
-For technical features specific to each subproject, please consult the respective modular manuals:
+## 🛡️ Key Features & Database Fallbacks
+
+*   **SQLite Database Fallback**: If the Supabase Postgres connection is unavailable, the backend automatically sets up a local SQLite database (`/tmp/pipeline.db`), ensuring the server always boots and runs cleanly.
+*   **Vercel Routing & Security**: A custom `vercel.json` configures clean routing and enforces clickjacking protection, XSS blocking, and strict referrer guidelines.
+*   **IPv4 Transaction Connection Pooler**: Outbound connections to Supabase are routed over IPv4 port `6543`, bypassing direct IPv6 outbound network limitations in serverless environments like Vercel.
+
+---
+
+For technical details specific to each subproject, please consult the respective manuals:
 *   📖 **Frontend Client Manual**: [/horizon-ai/README.md](file:///Users/deepakraja/deepakproject/ai-project/horizon-ai/README.md)
 *   📖 **Backend Server Manual**: [/backend/README.md](file:///Users/deepakraja/deepakproject/ai-project/backend/README.md)

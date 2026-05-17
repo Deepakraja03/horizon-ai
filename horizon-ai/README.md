@@ -1,59 +1,56 @@
-# Horizon AI — Next.js React 19 Frontend Client
+# Horizon AI — Next.js Frontend
 
-This is the high-fidelity, premium client application for **Horizon AI** built using **Next.js** (App Router) and **React 19**. The interface features curated CSS design tokens, smooth micro-interactions, responsive Kanban pipelines, and side-by-side executive candidate comparison systems with pristine print-bleed layouts.
-
----
-
-## 🎨 Premium UX & Design Elements
-
-*   **Elite Graphite Dark Theme**: Built around deep graphite hues, soft glowing border grids, and luxurious glassmorphism blurs for an executive dashboard feel.
-*   **Kanban Telemetry Pipeline**: Interactive state tracking that allows drag-and-drop-style status transitions with on-the-fly REST integrations.
-*   **Pristine Print-Bleed layouts**: Custom CSS media queries configured to strip sidebar telemetry, margins, and dashboard headers instantly when executing browser prints, rendering pixel-perfect, monochrome evaluation reports.
-*   **Responsive Telemetry**: Completely adaptive layout blocks optimized for widescreen executive screens down to career portal interfaces on mobile devices.
+This is the Next.js and React 19 frontend client for the **Horizon AI** recruitment dashboard. The interface features custom CSS styling, Kanban boards, and side-by-side candidate comparison screens with print-ready CSS layouts.
 
 ---
 
-## 📸 Product Tour & Telemetry Showcase
+## 🎨 Key Features & Interfaces
 
-Here is a visual walk-through of the premium, high-fidelity interfaces running live on **Horizon AI**:
+*   **Dark Theme Design**: Built using a clean graphite dark theme with CSS variables and glassmorphism styling.
+*   **Kanban Board**: Drag candidates across different interview stages with instant database synchronization.
+*   **Print-Ready CSS Layouts**: Custom media styles automatically strip dashboard sidebars and headers when printing, outputting a clean, paper-friendly candidate comparison sheet.
+*   **Responsive Layouts**: Fully responsive interface blocks optimized for recruiter dashboards and candidate career pages.
 
-### 1. Executive Telemetry Dashboard (Applicants Overview)
-The primary analytical interface presenting system stats, database connectivity telemetry, candidate applications, and active talent profiles:
-![Executive Telemetry Dashboard](../screenshots/pipeline_applicant.png)
+---
 
-### 2. Interactive Kanban Telemetry Pipeline
-Manage and transition candidates dynamically across hiring stages with real-time state synchronization:
-![Kanban Talent Pipeline](../screenshots/kaban_pipeline.png)
+## 📸 Product Tour & Showcase
 
-### 3. Hiring Committee Candidate Compare Matrix
-Compare multiple candidates side-by-side against custom role requirements. Trigger an automated Hiring Committee evaluation and generate monochrome print-bleed executive reports:
-![Candidate Compare Matrix](../screenshots/candidate_compare.png)
+Here is a visual walkthrough of the frontend layouts:
 
-### 4. Careers & Job Listings View (Candidate Portal)
-The career board where job seekers can view active opportunities and upload resumes:
+### 1. Recruiter Dashboard (Applicants Overview)
+Displays candidate statistics and database connection statuses:
+![Recruiter Dashboard](../screenshots/pipeline_applicant.png)
+
+### 2. Candidate Kanban Pipeline
+Track and manage candidates across hiring stages in real-time:
+![Kanban Pipeline](../screenshots/kaban_pipeline.png)
+
+### 3. Candidate Comparison Matrix
+Select up to 4 candidates to benchmark side-by-side and read automated AI hiring committee reports:
+![Candidate Comparison](../screenshots/candidate_compare.png)
+
+### 4. Careers Portal (Candidate View)
+A public board where job seekers can view active listings and upload their resumes:
 ![Candidate Jobs View](../screenshots/candidate_jobs_view.png)
 
-### 5. Live Candidate Application Tracking
-The telemetry board allowing applicants to monitor their application review status and stage logs in real-time:
-![Candidate Application Status](../screenshots/candidate_application_status.png)
+### 5. Application Tracking Board
+Allows candidates to track their application reviews and check status history:
+![Application Status](../screenshots/candidate_application_status.png)
 
-### 🎬 Workspace Telemetry Loop & Video Demonstration
-Here is an instant, looping walkthrough showing the landing page and candidate Kanban tracking pipeline in action:
+### 🎬 Workflow Highlight Loop & Full Video
+Here is a 15-second looping preview of the candidate tracking pipeline:
 
-![Horizon AI Telemetry Loop](../screenshots/system_demo_highlight.gif)
+![Horizon AI Workflow Loop](../screenshots/system_demo_highlight.gif)
 
-*   🎥 **[Watch the Full 6-Minute System Walkthrough (Google Drive)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)**
-
-
-
+*   🎥 **[Watch the Full 6-Minute Demo Video (Google Drive)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)**
 
 ---
 
 ## 🔐 Authentication Modes
 
-The frontend client operates on a smart segmented authentication architecture:
-1.  **Cloud Supabase Auth (Production)**: Handles secure JWT logins, passwordless Google OAuth handshakes, and persistent session recovery directly on our live domain.
-2.  **Sandbox Local Simulation**: Automatically initializes a Mock Recruiter workspace (`lead.recruiter@horizon.ai`) if Supabase environment keys are missing, allowing developers to test the full matching pipeline without registering accounts!
+The client operates on two authentication pathways:
+1.  **Cloud Supabase Auth (Production)**: Handles secure logins and Google OAuth handshakes directly on the live domain.
+2.  **Sandbox Local Simulation**: Defaults to a mock recruiter session if Supabase keys are missing, allowing you to test the resume matching features immediately.
 
 ---
 
@@ -61,10 +58,10 @@ The frontend client operates on a smart segmented authentication architecture:
 
 Create a `.env` file in this directory with the following variables:
 ```env
-# URL base pointing to your live FastAPI backend server
+# URL pointing to your live FastAPI backend server
 NEXT_PUBLIC_API_URL=https://horizon-ai-backend.vercel.app
 
-# Supabase Auth configuration (Optional: Sandbox mock active if left empty)
+# Supabase Auth configuration (Optional: Sandbox mock is active if left blank)
 NEXT_PUBLIC_SUPABASE_URL=https://clwtylsgsktgzxfzozez.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
@@ -73,22 +70,22 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ## 🚀 Local Installation & Launch
 
-Ensure you have Node.js (v18+) and your preferred package manager (`bun`, `npm`, or `yarn`) installed.
+Make sure you have Node.js (v18+) and **Bun** installed:
 
 ```bash
-# 1. Install required dependencies
-bun install   # or npm install
+# 1. Install dependencies
+bun install
 
-# 2. Spin up the hot-reloading Next.js development server
-bun run dev   # or npm run dev
+# 2. Run the development server
+bun run dev
 ```
-*Browse to `http://localhost:3000` to interact with the recruitment telemetry dashboard!*
+*Browse to `http://localhost:3000` to interact with the dashboard.*
 
 ---
 
-## 🛡️ Production Security Header Maps (`vercel.json`)
-The frontend contains an optimized `vercel.json` config mapping custom headers to enforce the following security frameworks:
-*   `X-Frame-Options: DENY` (Anti-Clickjacking protection)
-*   `X-Content-Type-Options: nosniff` (Forced browser MIME-type validation)
-*   `X-XSS-Protection: 1; mode=block` (Browser-level script blocking)
-*   `Referrer-Policy: strict-origin-when-cross-origin` (Strict outbound referrers)
+## 🛡️ Production Security Headers (`vercel.json`)
+The custom `vercel.json` file configures headers to enforce security policies:
+*   `X-Frame-Options: DENY` (Clickjacking prevention)
+*   `X-Content-Type-Options: nosniff` (Forced MIME validation)
+*   `X-XSS-Protection: 1; mode=block` (Script injection blocking)
+*   `Referrer-Policy: strict-origin-when-cross-origin` (Strict referrer tracking)
