@@ -41,7 +41,8 @@ The telemetry board allowing applicants to monitor their application review stat
 
 ### 🎬 Workflow Demonstration Video
 Watch our high-fidelity workspace demonstration video to see the full resume-parsing, matching, and committee evaluation flow in action:
-*   🎥 **[Watch the Workspace Video Demo (MOV)](screenshots/system_demo.mov)**
+*   🎥 **[Watch the High-Fidelity Workspace Video Demo (Google Drive)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)**
+
 
 ---
 
