@@ -117,9 +117,22 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
 ## 🚀 Unified Local Startup Guide
 
-Run the entire suite locally by spinning up both workspaces:
+You can launch the entire ecosystem (both frontend and backend) simultaneously with a single terminal command using our root-level launcher:
 
-### Step 1: Start the Backend Server (Python / FastAPI)
+### 1-Click Dev Server (Recommended)
+From the root of the project directory, simply run:
+```bash
+make dev
+```
+This will instantly activate the backend virtual environment (`.venv`), spin up your FastAPI serverless backend (`uvicorn`) on port `8000`, boot up your Next.js frontend client (`bun dev`) on port `3000`, and cleanly terminate both servers when you press `Ctrl+C` (preventing orphaned port conflicts).
+
+---
+
+### Manual Multi-Terminal Startup (Optional)
+
+If you prefer to run the workspaces in separate terminals for independent debugging:
+
+#### Step 1: Start the Backend Server (Python / FastAPI)
 Make sure you have Python 3.11+ and `uv` installed:
 ```bash
 # Navigate to the backend directory
@@ -137,18 +150,19 @@ uv run uvicorn main:app --reload
 ```
 *Your FastAPI documentation and interactive Swagger playground will launch at `http://localhost:8000/docs`.*
 
-### Step 2: Start the Frontend UI Client (Next.js)
+#### Step 2: Start the Frontend UI Client (Next.js)
 ```bash
 # Navigate to the frontend directory
 cd horizon-ai
 
-# Install node dependencies (Using Bun, npm, or Yarn)
-bun install  # or npm install
+# Install node dependencies using Bun
+bun install
 
 # Start the hot-reloading Next.js dev server
-bun run dev  # or npm run dev
+bun run dev
 ```
 *Your interactive dashboard will boot instantly at `http://localhost:3000`.*
+
 
 ---
 
