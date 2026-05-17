@@ -30,11 +30,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sansFont.variable} ${displayFont.variable} h-full antialiased`}
+      className={`${sansFont.variable} ${displayFont.variable} h-full overflow-hidden antialiased`}
       suppressHydrationWarning
     >
       <body
-        className="min-h-full flex flex-col bg-graphite-950 text-graphite-100 selection:bg-indigo-500/30 selection:text-white"
+        className="h-full overflow-hidden flex flex-col bg-graphite-950 text-graphite-100 selection:bg-indigo-500/30 selection:text-white"
         suppressHydrationWarning
       >
         {children}
