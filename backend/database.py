@@ -10,22 +10,34 @@ load_dotenv()
 DATABASE_URL = os.getenv("SUPABASE_DATABASE_URL")
 
 if not DATABASE_URL or not DATABASE_URL.strip():
-    raise ValueError("❌ SUPABASE_DATABASE_URL is not set in backend/.env. Supabase database connection is strictly required.")
+    print("==================================================")
+    print("⚠️ WARNING: SUPABASE_DATABASE_URL is not set!")
+    print("🚀 Falling back to a local SQLite Database in /tmp/pipeline.db")
+    print("==================================================")
+    db_url = "sqlite:////tmp/pipeline.db"
+else:
+    # Standardize connection string
+    db_url = DATABASE_URL
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-# Standardize connection string
-db_url = DATABASE_URL
-if db_url.startswith("postgres://"):
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
-
-# Create engine for Cloud Supabase PostgreSQL database
-engine = create_engine(
-    db_url, 
-    pool_pre_ping=True
-)
-
-print("==================================================")
-print("🚀 Connected to Cloud Supabase Database!")
-print("==================================================")
+# Create engine for database (PostgreSQL or SQLite fallback)
+if db_url.startswith("sqlite"):
+    engine = create_engine(
+        db_url,
+        connect_args={"check_same_thread": False}
+    )
+    print("==================================================")
+    print("🚀 Connected to Local SQLite Fallback Database!")
+    print("==================================================")
+else:
+    engine = create_engine(
+        db_url, 
+        pool_pre_ping=True
+    )
+    print("==================================================")
+    print("🚀 Connected to Cloud Supabase Database!")
+    print("==================================================")
 
 class JobDescriptionDB(SQLModel, table=True):
     __tablename__ = "job_descriptions"
