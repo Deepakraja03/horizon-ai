@@ -39,10 +39,12 @@ The career board where job seekers can view active opportunities and upload resu
 The telemetry board allowing applicants to monitor their application review status and stage logs in real-time:
 ![Candidate Application Status](screenshots/candidate_application_status.png)
 
-### 🎬 Workspace Telemetry Video Demonstration
-Click on the dashboard preview below to watch the high-fidelity video walkthrough of the resume-parsing, candidate matching, and committee evaluation flow in action:
+### 🎬 Workspace Telemetry Loop & Video Demonstration
+Here is an instant, looping walkthrough showing the landing page and candidate Kanban tracking pipeline in action:
 
-[![Watch the Horizon AI Workspace Video Demo](screenshots/pipeline_applicant.png)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)
+![Horizon AI Telemetry Loop](screenshots/system_demo_highlight.gif)
+
+*   🎥 **[Watch the Full 6-Minute System Walkthrough (Google Drive)](https://drive.google.com/file/d/1dgyjOxtX7f-Yu5i4rTx5_qADaS7mLGAQ/view?usp=sharing)**
 
 
 
