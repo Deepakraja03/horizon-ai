@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Graphite HSL Scales */
+  --graphite-50: #f8f8fa;
+  --graphite-100: #eef0f4;
+  --graphite-200: #d6dae2;
+  --graphite-300: #b8bec9;
+  --graphite-400: #8f97a6;
+  --graphite-500: #6c7482;
+  --graphite-600: #535966;
+  --graphite-700: #3f444d;
+  --graphite-800: #292c33;
+  --graphite-900: #1b1c20;
+  --graphite-950: #0f1012;
+
+  /* Theme Core Variables - LIGHT BY DEFAULT */
+  --background: #f6f6f9;
+  --foreground: var(--graphite-900);
+
+  /* Glass Panel Styles (Light Style) */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-hover-bg: rgba(255, 255, 255, 0.9);
+  --glass-hover-border: rgba(99, 102, 241, 0.35);
+
+  /* Shadows & Neon Accents */
+  --card-shadow: 0 10px 30px -10px rgba(41, 44, 51, 0.08);
+  --card-hover-shadow: 0 15px 35px -10px rgba(99, 102, 241, 0.15);
+  --glow-color: rgba(99, 102, 241, 0.06);
+  --sidebar-active-bg: rgba(99, 102, 241, 0.06);
+
+  /* Background gradients */
+  --bg-gradient:
+    radial-gradient(at 0% 0%, hsla(242, 47%, 94%, 0.6) 0px, transparent 40%),
+    radial-gradient(at 100% 0%, hsla(161, 52%, 95%, 0.5) 0px, transparent 40%),
+    radial-gradient(at 50% 100%, hsla(271, 35%, 94%, 0.4) 0px, transparent 40%);
+}
+
+.dark {
+  /* Theme Core Variables - DARK THEME Override */
+  --background: var(--graphite-950);
+  --foreground: var(--graphite-100);
+
+  /* Glass Panel Styles (Dark Style) */
+  --glass-bg: rgba(27, 28, 32, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-hover-bg: rgba(27, 28, 32, 0.65);
+  --glass-hover-border: rgba(99, 102, 241, 0.25);
+
+  /* Shadows & Neon Accents */
+  --card-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+  --card-hover-shadow: 0 15px 35px -10px rgba(99, 102, 241, 0.15);
+  --glow-color: rgba(99, 102, 241, 0.15);
+  --sidebar-active-bg: rgba(99, 102, 241, 0.1);
+
+  /* Background gradients */
+  --bg-gradient:
+    radial-gradient(at 0% 0%, hsla(242, 47%, 7%, 0.55) 0px, transparent 40%),
+    radial-gradient(at 100% 0%, hsla(161, 52%, 5%, 0.45) 0px, transparent 40%),
+    radial-gradient(at 50% 100%, hsla(271, 35%, 5%, 0.35) 0px, transparent 40%);
+}
+
+@theme {
+  /* Register custom graphite variables in Tailwind v4 */
+  --color-graphite-50: var(--graphite-50);
+  --color-graphite-100: var(--graphite-100);
+  --color-graphite-200: var(--graphite-200);
+  --color-graphite-300: var(--graphite-300);
+  --color-graphite-400: var(--graphite-400);
+  --color-graphite-500: var(--graphite-500);
+  --color-graphite-600: var(--graphite-600);
+  --color-graphite-700: var(--graphite-700);
+  --color-graphite-800: var(--graphite-800);
+  --color-graphite-900: var(--graphite-900);
+  --color-graphite-950: var(--graphite-950);
+
+  --font-sans: var(--font-sans), sans-serif;
+  --font-display: var(--font-display), sans-serif;
+}
+
+/* Custom Base Elements */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  background-image: var(--bg-gradient);
+  background-attachment: fixed;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-image 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--card-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  background: var(--glass-hover-bg);
+  border-color: var(--glass-hover-border);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 35px -8px var(--glow-color);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--graphite-400);
+}
