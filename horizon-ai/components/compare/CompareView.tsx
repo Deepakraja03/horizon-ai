@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { Candidate, ParsedJD } from "../../types";
+import CandidateRadar from "../CandidateRadar";
 
 export interface CompareViewProps {
   candidates: Candidate[];
@@ -464,6 +465,13 @@ export default function CompareView({ candidates, lastParsedJd, provider, modelN
                   </div>
                 )}
               </div>
+
+              {/* Dynamic Overlaid Dimensions Radar & Evidence Panel */}
+              <CandidateRadar 
+                candidates={selectedCandidates} 
+                lastParsedJd={lastParsedJd} 
+                targetRole={targetRole} 
+              />
 
               {/* Side-by-Side Columnar Matrix Grid (Task 6.2) */}
               <div 
